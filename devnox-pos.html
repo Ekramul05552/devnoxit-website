@@ -51,6 +51,63 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fb;
+        }
+        .plan-header {
+            background-image: linear-gradient(to right, #3b82f6, #8b5cf6); /* blue-500 to purple-600 */
+        }
+        .toggle-switch {
+            position: relative;
+            width: 250px;
+            height: 40px;
+            background-color: #e5e7eb;
+            border-radius: 9999px;
+            padding: 4px;
+            cursor: pointer;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .toggle-switch-button {
+            position: absolute;
+            width: 50%;
+            height: 32px;
+            border-radius: 9999px;
+            background-color: #ffffff;
+            transition: transform 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+        }
+        .monthly-active .toggle-switch-button {
+            transform: translateX(0);
+        }
+        .yearly-active .toggle-switch-button {
+            transform: translateX(100%);
+        }
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.4); /* Dark semi-transparent background */
+        }
+        .submit-button {
+            background-image: linear-gradient(to right, #3b82f6, #8b5cf6); /* blue-500 to purple-600 */
+        }
+        /* Custom styling for the reCAPTCHA placeholder */
+        .recaptcha-placeholder {
+            border: 1px solid #d1d5db;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            width: 150px; /* Small fixed width like the image */
+            display: flex;
+            align-items: center;
+        }
+        .form-input {
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
 
@@ -106,7 +163,7 @@
                     <p>We are here to help you manage your business efficiently with international-standard POS software.</p>
                     <div class="hero-buttons-pos">
                         <a href="#contact-pos" class="btn btn-secondary">Request Demo</a>
-                        <a href="#pricing-pos" class="btn btn-primary">Register Now</a>
+                        <a href="#" onclick="toggleModal(true)" class="btn btn-primary">Register Now</a>
                     </div>
                     <div class="hero-stats">
                         <div class="stat-item">
@@ -209,59 +266,34 @@
         </section>
 
         <!-- Pricing Section -->
-        <section id="pricing-pos" class="pricing-pos">
-            <div class="container">
-                <h2>PRICING PLAN</h2>
-                <p>From startups to enterprises, our pricing adapts to your needs—giving you flexibility, affordability, and long-term value.</p>
-                <div class="pricing-toggle">
-                    <button class="toggle-btn active" data-plan="monthly">MONTHLY</button>
-                    <button class="toggle-btn" data-plan="yearly">YEARLY</button>
-                </div>
-                <div class="pricing-grid">
-                    <div class="pricing-card">
-                        <h3>Premium</h3>
-                        <div class="price">BDT 299/month</div>
-                        <ul>
-                            <li>Number of Branches: 1</li>
-                            <li>Number of Products: Unlimited</li>
-                            <li>Ecommerce: No</li>
-                        </ul>
-                        <a href="#contact-pos" class="btn btn-primary">Get Started</a>
-                    </div>
-                    <div class="pricing-card popular">
-                        <div class="popular-badge">Most Popular</div>
-                        <h3>Silver</h3>
-                        <div class="price">BDT 499/month</div>
-                        <ul>
-                            <li>Number of Branches: 3</li>
-                            <li>Number of Products: Unlimited</li>
-                            <li>Ecommerce: Yes</li>
-                        </ul>
-                        <a href="#contact-pos" class="btn btn-primary">Get Started</a>
-                    </div>
-                    <div class="pricing-card">
-                        <h3>Gold</h3>
-                        <div class="price">BDT 799/month</div>
-                        <ul>
-                            <li>Number of Branches: 5</li>
-                            <li>Number of Products: Unlimited</li>
-                            <li>Ecommerce: Yes</li>
-                        </ul>
-                        <a href="#contact-pos" class="btn btn-primary">Get Started</a>
-                    </div>
-                    <div class="pricing-card">
-                        <h3>Platinum</h3>
-                        <div class="price">BDT 1299/month</div>
-                        <ul>
-                            <li>Number of Branches: Unlimited</li>
-                            <li>Number of Products: Unlimited</li>
-                            <li>Ecommerce: Yes</li>
-                        </ul>
-                        <a href="#contact-pos" class="btn btn-primary">Get Started</a>
+        <section id="pricing-pos">
+            <div class="max-w-7xl mx-auto">
+                <!-- Header -->
+                <h1 class="text-4xl sm:text-5xl font-extrabold text-center text-gray-800 mb-4">Choose Your Ideal Plan</h1>
+                <p class="text-lg text-center text-gray-500 mb-12">Flexible options designed for every business size.</p>
+
+                <!-- Pricing Toggle -->
+                <div class="flex flex-col items-center mb-16">
+                    <div id="pricing-toggle-container" class="flex items-center space-x-4">
+                        <span class="text-gray-700 font-semibold"></span>
+
+                        <div id="toggle-switch" class="toggle-switch yearly-active" onclick="togglePricing()">
+                            <div id="toggle-button" class="toggle-switch-button"></div>
+                            <div class="flex justify-around items-center h-full text-sm font-bold">
+                                <span id="monthly-label" class="w-1/2 text-center z-10 text-gray-700 transition-colors duration-300">Monthly</span>
+                                <span id="yearly-label" class="w-1/2 text-center z-10 text-white transition-colors duration-300">Yearly</span>
+                            </div>
+                        </div>
+
+                        <div id="save-badge" class="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg transform transition-opacity duration-500 opacity-100">
+                            Save up to 10% Annually!
+                        </div>
                     </div>
                 </div>
-                <div class="industrial-packages">
-                    <a href="#contact-pos" class="btn btn-secondary">View Industrial Packages</a>
+
+                <!-- Pricing Grid -->
+                <div id="pricing-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Plan Cards will be generated here by JavaScript -->
                 </div>
             </div>
         </section>
@@ -318,6 +350,80 @@
         </section>
     </main>
 
+    <!-- The Modal Container (Hidden by default, shown by JS) -->
+    <div id="registration-modal" class="modal-overlay fixed inset-0 flex items-center justify-center p-4 transition-opacity duration-300 hidden">
+
+        <!-- Modal Card -->
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-auto transform transition-transform duration-300 scale-100">
+
+            <!-- Close Button -->
+            <button onclick="toggleModal(false)" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+
+            <div class="p-8 space-y-5">
+                <!-- Header -->
+                <div class="text-center">
+                    <h2 class="text-2xl font-extrabold text-gray-800 mb-1">REGISTER NOW</h2>
+                    <p class="text-sm text-gray-500">or Call Now to our Sales Officer: <span class="font-bold">+8801990-723902</span></p>
+                </div>
+
+                <!-- Registration Form -->
+                <form class="space-y-4" onsubmit="event.preventDefault(); alert('Form Submitted!'); toggleModal(false);">
+
+                    <!-- Company Name -->
+                    <input type="text" placeholder="Company Name" class="form-input" required>
+
+                    <!-- Contact Number & Email -->
+                    <div class="flex space-x-4">
+                        <input type="tel" placeholder="Contact Number" class="form-input" required>
+                        <input type="email" placeholder="Email" class="form-input" required>
+                    </div>
+
+                    <!-- Username & Password -->
+                    <div class="flex space-x-4">
+                        <input type="text" placeholder="Username" class="form-input" required>
+                        <input type="password" placeholder="Password" class="form-input" required>
+                    </div>
+
+                    <!-- Subdomain & Suffix -->
+                    <div class="flex">
+                        <input type="text" placeholder="Subdomain" class="form-input rounded-r-none border-r-0 flex-grow" required>
+                        <span class="bg-gray-100 text-gray-700 py-2.5 px-4 border border-l-0 border-gray-300 rounded-r-lg whitespace-nowrap text-sm flex items-center">
+                            .sherazipos.com
+                        </span>
+                    </div>
+
+                    <!-- Set Custom Domain -->
+                    <input type="text" placeholder="Set Custom Domain" class="form-input">
+
+                    <!-- Instructions and reCAPTCHA -->
+                    <div class="pt-2 space-y-3">
+                        <p class="text-xs text-gray-500">
+                            If you want to set a custom domain (e.g. example.com), You have to put add A record to your DNS.
+                            <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Instructions</a>
+                        </p>
+
+                        <!-- reCAPTCHA Placeholder -->
+                        <div class="recaptcha-placeholder bg-white">
+                            <input type="checkbox" id="robot-check" class="w-4 h-4 text-blue-600 border-gray-300 rounded mr-2" required>
+                            <label for="robot-check" class="text-sm text-gray-700">I'm not a robot</label>
+                            <!-- ReCAPTCHA logo placeholder -->
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="submit-button w-full py-3 mt-6 rounded-lg text-white font-semibold transition duration-300 hover:opacity-90 shadow-lg">
+                        Submit
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -356,13 +462,388 @@
             });
         });
 
-        // Pricing toggle functionality
-        document.querySelectorAll('.toggle-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                // Here you would typically update prices based on monthly/yearly
+        // Pricing data and functionality
+        const plans = [
+            {
+                name: 'Premium',
+                monthly: 299,
+                yearly: 3300,
+                features: [
+                    {text: 'Free Trial', available: true},
+                    {text: 'Product and Categories', available: true},
+                    {text: 'Sale and Purchase', available: true},
+                    {text: 'Sale Return', available: true},
+                    {text: 'Purchase Return', available: true},
+                    {text: 'Expenses', available: true},
+                    {text: 'Stock Transfer', available: true},
+                    {text: 'Quotation', available: true},
+                    {text: 'Product Delivery', available: true},
+                    {text: 'Stock Count and Adjustment', available: true},
+                    {text: 'Reports', available: true},
+                    {text: 'HRM', available: true},
+                    {text: 'Accounting', available: true},
+                    {text: 'Ecommerce', available: false},
+                    {text: 'Number of Branches: 1', available: true},
+                    {text: 'Number of Products: Unlimited', available: true},
+                    {text: 'Number of Invoices: Unlimited', available: true},
+                    {text: 'Number of User Account: 20', available: true},
+                    {text: 'Number of Employee: 20', available: true}
+                ]
+            },
+            {
+                name: 'Silver',
+                monthly: 499,
+                yearly: 5500,
+                features: [
+                    {text: 'Free Trial', available: true},
+                    {text: 'Product and Categories', available: true},
+                    {text: 'Sale and Purchase', available: true},
+                    {text: 'Sale Return', available: true},
+                    {text: 'Purchase Return', available: true},
+                    {text: 'Expenses', available: true},
+                    {text: 'Stock Transfer', available: true},
+                    {text: 'Quotation', available: true},
+                    {text: 'Product Delivery', available: true},
+                    {text: 'Stock Count and Adjustment', available: true},
+                    {text: 'Reports', available: true},
+                    {text: 'HRM', available: true},
+                    {text: 'Accounting', available: true},
+                    {text: 'Ecommerce', available: true},
+                    {text: 'Number of Branches: 2', available: true},
+                    {text: 'Number of Products: Unlimited', available: true},
+                    {text: 'Number of Invoices: Unlimited', available: true},
+                    {text: 'Number of User Account: 30', available: true},
+                    {text: 'Number of Employee: 30', available: true}
+                ]
+            },
+            {
+                name: 'Gold',
+                monthly: 999,
+                yearly: 11000,
+                features: [
+                    {text: 'Free Trial', available: true},
+                    {text: 'Product and Categories', available: true},
+                    {text: 'Sale and Purchase', available: true},
+                    {text: 'Sale Return', available: true},
+                    {text: 'Purchase Return', available: true},
+                    {text: 'Expenses', available: true},
+                    {text: 'Stock Transfer', available: true},
+                    {text: 'Quotation', available: true},
+                    {text: 'Product Delivery', available: true},
+                    {text: 'Stock Count and Adjustment', available: true},
+                    {text: 'Reports', available: true},
+                    {text: 'HRM', available: true},
+                    {text: 'Accounting', available: true},
+                    {text: 'Ecommerce', available: false},
+                    {text: 'Number of Branches: 4', available: true},
+                    {text: 'Number of Products: Unlimited', available: true},
+                    {text: 'Number of Invoices: Unlimited', available: true},
+                    {text: 'Number of User Account: 40', available: true},
+                    {text: 'Number of Employee: 40', available: true}
+                ]
+            },
+            {
+                name: 'Platinum',
+                monthly: 1499,
+                yearly: 17000,
+                features: [
+                    {text: 'Free Trial', available: true},
+                    {text: 'Product and Categories', available: true},
+                    {text: 'Sale and Purchase', available: true},
+                    {text: 'Sale Return', available: true},
+                    {text: 'Purchase Return', available: true},
+                    {text: 'Expenses', available: true},
+                    {text: 'Stock Transfer', available: true},
+                    {text: 'Quotation', available: true},
+                    {text: 'Product Delivery', available: true},
+                    {text: 'Stock Count and Adjustment', available: true},
+                    {text: 'Reports', available: true},
+                    {text: 'HRM', available: true},
+                    {text: 'Accounting', available: true},
+                    {text: 'Ecommerce', available: false},
+                    {text: 'Number of Branches: 8', available: true},
+                    {text: 'Number of Products: Unlimited', available: true},
+                    {text: 'Number of Invoices: Unlimited', available: true},
+                    {text: 'Number of User Account: 50', available: true},
+                    {text: 'Number of Employee: 50', available: true}
+                ]
+            },
+            {
+                name: 'Industrial Package',
+                monthly: 3000,
+                yearly: 30000,
+                features: [
+                    {text: 'Free Trial', available: true},
+                    {text: 'Product and Categories', available: true},
+                    {text: 'Sale and Purchase', available: true},
+                    {text: 'Sale Return', available: true},
+                    {text: 'Purchase Return', available: true},
+                    {text: 'Expenses', available: true},
+                    {text: 'Stock Transfer', available: true},
+                    {text: 'Quotation', available: true},
+                    {text: 'Product Delivery', available: true},
+                    {text: 'Stock Count and Adjustment', available: true},
+                    {text: 'Reports', available: true},
+                    {text: 'HRM', available: true},
+                    {text: 'Accounting', available: true},
+                    {text: 'Ecommerce', available: false},
+                    {text: 'Number of Branches: 12', available: true},
+                    {text: 'Number of Products: Unlimited', available: true},
+                    {text: 'Number of Invoices: Unlimited', available: true},
+                    {text: 'Number of User Account: Unlimited', available: true},
+                    {text: 'Number of Employee: Unlimited', available: true}
+                ]
+            },
+            {
+                name: 'Business Automation 1',
+                monthly: 999,
+                yearly: 10000,
+                features: [
+                    {text: 'Free Trial', available: true},
+                    {text: 'Product and Categories', available: true},
+                    {text: 'Sale and Purchase', available: true},
+                    {text: 'Sale Return', available: true},
+                    {text: 'Purchase Return', available: true},
+                    {text: 'Expenses', available: true},
+                    {text: 'Stock Transfer', available: true},
+                    {text: 'Quotation', available: true},
+                    {text: 'Product Delivery', available: true},
+                    {text: 'Stock Count and Adjustment', available: true},
+                    {text: 'Reports', available: true},
+                    {text: 'HRM', available: true},
+                    {text: 'Accounting', available: true},
+                    {text: 'Ecommerce', available: true},
+                    {text: 'Number of Branches: 1', available: true},
+                    {text: 'Number of Products: Unlimited', available: true},
+                    {text: 'Number of Invoices: Unlimited', available: true},
+                    {text: 'Number of User Account: Unlimited', available: true},
+                    {text: 'Number of Employee: Unlimited', available: true}
+                ]
+            },
+            {
+                name: 'Business Automation 2',
+                monthly: 1499,
+                yearly: 14400,
+                features: [
+                    {text: 'Free Trial', available: true},
+                    {text: 'Product and Categories', available: true},
+                    {text: 'Sale and Purchase', available: true},
+                    {text: 'Sale Return', available: true},
+                    {text: 'Purchase Return', available: true},
+                    {text: 'Expenses', available: true},
+                    {text: 'Stock Transfer', available: true},
+                    {text: 'Quotation', available: true},
+                    {text: 'Product Delivery', available: true},
+                    {text: 'Stock Count and Adjustment', available: true},
+                    {text: 'Reports', available: true},
+                    {text: 'HRM', available: true},
+                    {text: 'Accounting', available: true},
+                    {text: 'Ecommerce', available: true},
+                    {text: 'Number of Branches: 2', available: true},
+                    {text: 'Number of Products: Unlimited', available: true},
+                    {text: 'Number of Invoices: Unlimited', available: true},
+                    {text: 'Number of User Account: Unlimited', available: true},
+                    {text: 'Number of Employee: Unlimited', available: true}
+                ]
+            },
+            {
+                name: 'Business Automation 3',
+                monthly: 1999,
+                yearly: 19200,
+                features: [
+                    {text: 'Free Trial', available: true},
+                    {text: 'Product and Categories', available: true},
+                    {text: 'Sale and Purchase', available: true},
+                    {text: 'Sale Return', available: true},
+                    {text: 'Purchase Return', available: true},
+                    {text: 'Expenses', available: true},
+                    {text: 'Stock Transfer', available: true},
+                    {text: 'Quotation', available: true},
+                    {text: 'Product Delivery', available: true},
+                    {text: 'Stock Count and Adjustment', available: true},
+                    {text: 'Reports', available: true},
+                    {text: 'HRM', available: true},
+                    {text: 'Accounting', available: true},
+                    {text: 'Ecommerce', available: true},
+                    {text: 'Number of Branches: 4', available: true},
+                    {text: 'Number of Products: Unlimited', available: true},
+                    {text: 'Number of Invoices: Unlimited', available: true},
+                    {text: 'Number of User Account: Unlimited', available: true},
+                    {text: 'Number of Employee: Unlimited', available: true}
+                ]
+            },
+            {
+                name: 'Automation Startup',
+                monthly: 499,
+                yearly: 5000,
+                features: [
+                    {text: 'Free Trial', available: true},
+                    {text: 'Product and Categories', available: true},
+                    {text: 'Sale and Purchase', available: true},
+                    {text: 'Sale Return', available: true},
+                    {text: 'Purchase Return', available: true},
+                    {text: 'Expenses', available: true},
+                    {text: 'Stock Transfer', available: true},
+                    {text: 'Quotation', available: true},
+                    {text: 'Product Delivery', available: true},
+                    {text: 'Stock Count and Adjustment', available: true},
+                    {text: 'Reports', available: true},
+                    {text: 'HRM', available: true},
+                    {text: 'Accounting', available: true},
+                    {text: 'Ecommerce', available: false},
+                    {text: 'Number of Branches: 1', available: true},
+                    {text: 'Number of Products: 3000', available: true},
+                    {text: 'Number of Invoices: 10000', available: true},
+                    {text: 'Number of User Account: 10', available: true},
+                    {text: 'Number of Employee: 10', available: true}
+                ]
+            },
+            {
+                name: 'Elite',
+                monthly: 799,
+                yearly: 8789,
+                features: [
+                    {text: 'Free Trial', available: true},
+                    {text: 'Product and Categories', available: true},
+                    {text: 'Sale and Purchase', available: true},
+                    {text: 'Sale Return', available: true},
+                    {text: 'Purchase Return', available: true},
+                    {text: 'Expenses', available: true},
+                    {text: 'Stock Transfer', available: true},
+                    {text: 'Quotation', available: true},
+                    {text: 'Product Delivery', available: true},
+                    {text: 'Stock Count and Adjustment', available: true},
+                    {text: 'Reports', available: true},
+                    {text: 'HRM', available: true},
+                    {text: 'Accounting', available: true},
+                    {text: 'Ecommerce', available: false},
+                    {text: 'Number of Branches: 3', available: true},
+                    {text: 'Number of Products: Unlimited', available: true},
+                    {text: 'Number of Invoices: Unlimited', available: true},
+                    {text: 'Number of User Account: 35', available: true},
+                    {text: 'Number of Employee: 35', available: true}
+                ]
+            },
+            {
+                name: 'Business Automation 4',
+                monthly: 2999,
+                yearly: 32989,
+                features: [
+                    {text: 'Free Trial', available: true},
+                    {text: 'Product and Categories', available: true},
+                    {text: 'Sale and Purchase', available: true},
+                    {text: 'Sale Return', available: true},
+                    {text: 'Purchase Return', available: true},
+                    {text: 'Expenses', available: true},
+                    {text: 'Stock Transfer', available: true},
+                    {text: 'Quotation', available: true},
+                    {text: 'Product Delivery', available: true},
+                    {text: 'Stock Count and Adjustment', available: true},
+                    {text: 'Reports', available: true},
+                    {text: 'HRM', available: true},
+                    {text: 'Accounting', available: true},
+                    {text: 'Ecommerce', available: true},
+                    {text: 'Number of Branches: 6', available: true},
+                    {text: 'Number of Products: Unlimited', available: true},
+                    {text: 'Number of Invoices: Unlimited', available: true},
+                    {text: 'Number of User Account: Unlimited', available: true},
+                    {text: 'Number of Employee: Unlimited', available: true}
+                ]
+            },
+            {
+                name: 'Palladium',
+                monthly: 1099,
+                yearly: 12089,
+                features: [
+                    {text: 'Free Trial', available: true},
+                    {text: 'Product and Categories', available: true},
+                    {text: 'Sale and Purchase', available: true},
+                    {text: 'Sale Return', available: true},
+                    {text: 'Purchase Return', available: true},
+                    {text: 'Expenses', available: true},
+                    {text: 'Stock Transfer', available: true},
+                    {text: 'Quotation', available: true},
+                    {text: 'Product Delivery', available: true},
+                    {text: 'Stock Count and Adjustment', available: true},
+                    {text: 'Reports', available: true},
+                    {text: 'HRM', available: true},
+                    {text: 'Accounting', available: true},
+                    {text: 'Ecommerce', available: false},
+                    {text: 'Number of Branches: 5', available: true},
+                    {text: 'Number of Products: Unlimited', available: true},
+                    {text: 'Number of Invoices: Unlimited', available: true},
+                    {text: 'Number of User Account: Unlimited', available: true},
+                    {text: 'Number of Employee: Unlimited', available: true}
+                ]
+            }
+        ];
+
+        let isYearly = true;
+
+        function generatePlans() {
+            const grid = document.getElementById('pricing-grid');
+            grid.innerHTML = '';
+            plans.forEach(plan => {
+                const price = isYearly ? plan.yearly : plan.monthly;
+                const period = isYearly ? '/year' : '/month';
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-lg shadow-lg p-6 text-center';
+                card.innerHTML = `
+                    <h3 class="text-xl font-bold mb-4">${plan.name}</h3>
+                    <p class="text-3xl font-bold text-blue-600 mb-4">BDT ${price}${period}</p>
+                    <a href="#contact" class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition">Get Started</a>
+                    <ul class="mt-6 text-left">
+                        ${plan.features.map(f => `<li class="mb-2"><i class="fas ${f.available ? 'fa-check text-green-500' : 'fa-times text-red-500'} mr-2"></i>${f.text}</li>`).join('')}
+                    </ul>
+                `;
+                grid.appendChild(card);
             });
+        }
+
+        function togglePricing() {
+            const toggle = document.getElementById('toggle-switch');
+            const monthlyLabel = document.getElementById('monthly-label');
+            const yearlyLabel = document.getElementById('yearly-label');
+            const badge = document.getElementById('save-badge');
+            isYearly = !isYearly;
+            if (isYearly) {
+                toggle.classList.remove('monthly-active');
+                toggle.classList.add('yearly-active');
+                monthlyLabel.classList.remove('text-white');
+                monthlyLabel.classList.add('text-gray-700');
+                yearlyLabel.classList.remove('text-gray-700');
+                yearlyLabel.classList.add('text-white');
+                badge.style.opacity = '1';
+            } else {
+                toggle.classList.remove('yearly-active');
+                toggle.classList.add('monthly-active');
+                monthlyLabel.classList.remove('text-gray-700');
+                monthlyLabel.classList.add('text-white');
+                yearlyLabel.classList.remove('text-white');
+                yearlyLabel.classList.add('text-gray-700');
+                badge.style.opacity = '0';
+            }
+            generatePlans();
+        }
+
+        // Initial load
+        generatePlans();
+
+        // Modal functionality
+        function toggleModal(show) {
+            const modal = document.getElementById('registration-modal');
+            if (show) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('registration-modal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                toggleModal(false);
+            }
         });
     </script>
 
